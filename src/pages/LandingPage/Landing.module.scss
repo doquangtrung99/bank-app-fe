@@ -1,0 +1,95 @@
+
+.container{
+    background-color: #d9f0e2;
+    .navbar_wrapper{
+        background-color: #fcfdff;
+
+
+        .app_bar{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 50px;
+    
+            div{
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+
+    .body_container{
+
+
+        .first_section{
+            min-height: 100vh;
+            background-image: url('../../assets/9322.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+
+
+            .left_section{
+                width: 40%;
+                color: rgba(200, 200, 200, 0.8);
+                margin-left: 50px;
+                padding: 20px 0;
+                button{
+                    max-width: 300px;
+                    min-height: 50px;
+                }
+            }
+
+            .right_section{
+                flex:1;
+                display: flex;
+                justify-items: flex-end;
+                align-items: center;
+                padding: 30px;
+
+                .image{
+                    background-image: url('../../assets/8292064.jpg');
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    height: 90%;
+                    width: 100%;
+                }
+            }
+            
+        }
+
+        .second_section{
+            background-image: url('../../assets/rrt1.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+
+            .image_1{
+                background-image: url('../../assets/waves.png');
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                height: 600px;
+                width: 100%;
+            }
+
+            .image_2{
+                background-image: url('../../assets/img.png');
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                height: 600px;
+                width: 100%;
+            }
+        }
+    }
+    .footer_container{
+
+        & div{
+            color:'white';
+            background-color: darkslategray;
+        }
+    }
+    
+}

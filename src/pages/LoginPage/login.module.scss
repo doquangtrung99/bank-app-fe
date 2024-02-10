@@ -1,0 +1,18 @@
+
+
+.login-form{
+    padding: 100px 50px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+    background-color: azure;
+    z-index: 10;
+
+    label{
+        color:black
+    }
+
+    .register_account{
+        cursor: pointer;
+        color: brown;
+    }
+}

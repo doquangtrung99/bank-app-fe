@@ -1,0 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+.app {
+    min-height: 100dvh;
+    background-color: rgba(255, 255, 200, 0.5);
+}

@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { AuthService } from "../services";
 import useGlobal from "./useGlobal";
 import { setHeader } from "../configs/axiosAuth";
+
+// @ts-ignore  
+import { jwtDecode } from "jwt-decode";
 const useAuthentication = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { setUser } = useGlobal();
@@ -10,14 +13,17 @@ const useAuthentication = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      AuthService.validateToken(token)
+      const currentTokenData = jwtDecode(token);
+      AuthService.validateToken(token, currentTokenData?.userId)
         .then((decoded) => {
           if (decoded && decoded.data.email) {
             setUser(decoded.data);
             setIsAuthenticated(true);
             setHeader(decoded.data.userId, token);
           }
-        }).catch(() => {
+        })
+        .catch((error) => {
+          console.log('ERROR', error)
           localStorage.removeItem('token');
           setIsAuthenticated(false);
         })

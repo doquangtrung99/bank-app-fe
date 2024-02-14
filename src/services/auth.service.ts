@@ -15,37 +15,40 @@ interface ILogin {
     email: string,
     password: string
 }
+
+interface IRefreshToken {
+    accessToken: string
+}
 class AuthService {
 
-    static async login({ email, password }: ILogin, signal: AbortSignal) {
-        return await axios.post("/auth/login", {
-            email,
-            password
-        }, {
-            signal
-        })
+    static async login({ email, password }: ILogin, signal?: AbortSignal) {
+        return await axios.post("/auth/login", { email, password }, { signal })
     }
 
-    static async register({ name, email, password, identificationNumber, identificationType, mobileNumber, country, proofOfIdentity }: RegisterUser) {
-        return await axios.post("/auth/register", {
-            name,
-            email,
-            country,
-            password,
-            mobileNumber,
-            identificationNumber,
-            identificationType,
-            proofOfIdentity
-        })
+    static async register(registerData: RegisterUser, signal?: AbortSignal) {
+        return await axios.post("/auth/register", { ...registerData }, { signal })
     }
 
-    static async validateToken(token: string): Promise<AxiosResponse<ValidateResponse>> {
-        return await axios.post("/auth/validate", { token });
-    }
+    static async validateToken(token: string, userId: string, signal?: AbortSignal): Promise<AxiosResponse<ValidateResponse>> {
+        return await axios.post("/auth/validate", { token },
+            {
+                signal,
+                headers: {
+                    'x-client-id': userId
+                }
+            })
+    };
 
-    refreshToken() {
-
-    }
+    static async refreshToken(token: string, userId: string, signal?: AbortSignal): Promise<AxiosResponse<IRefreshToken>> {
+        return await axios.post("/auth/refreshToken", {},
+            {
+                signal,
+                headers: {
+                    "Authorization": token,
+                    'x-client-id': userId
+                }
+            })
+    };
 
 }
 

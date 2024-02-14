@@ -50,7 +50,9 @@ const Register = () => {
                 };
                 await trigger(AuthService.register(registerData));
                 toast.success('Register user sucessfully');
-                navigate('/login');
+                setTimeout(() => {
+                    navigate('/login');
+                });
             } catch (error: any) {
                 console.log('error', error)
                 if (error?.response?.data?.message) {

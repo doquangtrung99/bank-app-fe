@@ -101,12 +101,11 @@ export default function TransactionTable() {
                 try {
                     const resTransfer = await trigger(TransactionService.transfer(transferData, user.id));
                     if (resTransfer) {
-                        console.log(resTransfer);
                         toast.success('Transfer successfully');
                     }
                 } catch (error) {
                     console.log(error);
-                    toast.success('Transfer unsuccessfully');
+                    toast.error('Transfer unsuccessfully');
                 }
                 break;
         }

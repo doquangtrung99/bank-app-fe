@@ -1,4 +1,10 @@
 
+
+enum AccountType {
+    CURRENT = 'CURRENT',
+    SAVINGS = 'SAVINGS'
+}
+
 export interface RegisterUser {
     name: string
     email: string
@@ -26,9 +32,10 @@ export interface IUser {
 }
 
 export interface IAccountItem {
-    accountId: string;
+    id: string;
     userId: string;
-    type: number;
+    accountNumber: number;
+    type: AccountType.CURRENT | AccountType.SAVINGS;
     balance: number;
 }
 
@@ -48,7 +55,6 @@ export interface IFormItem {
 export interface User {
     id: string,
     name: string,
-    identification: number,
     email: string,
     mobileNumber: string,
     identificationType: string,
@@ -57,6 +63,18 @@ export interface User {
     accessToken: string
 }
 
+
+export interface AccountsUser {
+    id: string
+    country: string
+    currentAccounts: null | {}
+    savingsAccounts: null | {}
+    identificationNumber: number
+    identificationType: string
+    mobileNumber: string
+    name: string
+    proofOfIdentity: Blob
+}
 
 export interface Deposit {
     accountId: string
@@ -86,4 +104,23 @@ export interface IFooterItem {
     icon: React.ReactElement<any, any>
     title: string
     content: string
+}
+
+
+export interface ValidateResponse {
+    userId: string,
+    username: string,
+    email: string,
+    role: string,
+    iat: number,
+    exp: number
+}
+
+export interface ILogin {
+    email: string,
+    password: string
+}
+
+export interface IRefreshToken {
+    accessToken: string
 }

@@ -14,18 +14,6 @@ import { toast } from 'react-toastify'
 import { User } from "../../interfaces";
 import { ContentAccordian } from "./components/ContentAccordian";
 
-// interface AccountsUser {
-//     id: string
-//     country: string
-//     currentAccounts: null | {}
-//     savingsAccounts: null | {}
-//     identificationNumber: number
-//     identificationType: string
-//     mobileNumber: string
-//     name: string
-//     proofOfIdentity: Blob
-// }
-
 export enum AccountType {
     SAVINGS = 'SAVINGS',
     CURRENT = 'CURRENT'
@@ -52,7 +40,7 @@ const Account = () => {
         setSavingsAccount(user?.savingsAccounts || {});
     }, [user])
 
-    const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+    const handleChange = (panel: string) => (_: React.SyntheticEvent, newExpanded: boolean) => {
 
         if (panel === 'panel1' && checkObjectIsEmty(currentAccount)) {
             return setExpanded(newExpanded ? panel : false);
@@ -84,11 +72,11 @@ const Account = () => {
 
     }
 
-    const havingAccount = (account: Account) => {
+    const havingAccount = (account = {}) => {
         return Object.keys(account).length > 0
     }
 
-    const renderCaret = (account: Account, panel: string) => {
+    const renderCaret = (account = {}, panel: string) => {
         if (Object.keys(account).length > 0) {
             if (expanded === panel) {
                 return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -122,7 +110,7 @@ const Account = () => {
 
     return (
         <>
-            <Button sx={{ margin: '20px 0 10px 10px' }} variant='outlined' onClick={() => navigate('/home')}> Back to accounts page </Button>
+            <Button sx={{ margin: '20px 0 10px 10px' }} variant='outlined' onClick={() => navigate('/home')}> Back to home page </Button>
             <Grid>
                 <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                     <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" >
@@ -135,6 +123,7 @@ const Account = () => {
                                     <Button
                                         onClick={() => handleCreateAccount('CURRENT')}
                                         variant="outlined"
+                                        data-testid="btn-create-current-account"
                                         sx={{ fontSize: '15px', ml: '10px', background: '#F0F0F0' }}
                                     >
                                         {loading ? <CircularProgress size={24} /> : '+'}
@@ -168,6 +157,7 @@ const Account = () => {
                                     <Button
                                         onClick={() => handleCreateAccount('SAVINGS')}
                                         variant="outlined"
+                                        data-testid="btn-create-savings-account"
                                         sx={{ fontSize: '15px', ml: '10px', background: '#F0F0F0' }}
                                     >
                                         {loading ? <CircularProgress size={24} /> : '+'}

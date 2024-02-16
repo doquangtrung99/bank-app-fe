@@ -29,13 +29,11 @@ const Register = () => {
     };
 
     const handleSubmit = (values: RegisterUser) => {
-        // Handle form submission here
         const countryCode = parsePhoneNumber(values.mobileNumber)?.countryCallingCode;
         const phoneNumber = parsePhoneNumber(values.mobileNumber)?.nationalNumber;
-        const mpbilePhoneNumber = countryCode + ' ' + phoneNumber;
+        const mobilePhoneNumber = countryCode + ' ' + phoneNumber;
 
         const file = new FileReader();
-
         file.onload = async () => {
             try {
                 const registerData = {
@@ -44,7 +42,7 @@ const Register = () => {
                     identificationType: values.identificationType,
                     identificationNumber: values.identificationNumber,
                     email: values.email,
-                    mobileNumber: mpbilePhoneNumber,
+                    mobileNumber: mobilePhoneNumber,
                     country: values.country,
                     proofOfIdentity: file.result
                 };
@@ -71,8 +69,8 @@ const Register = () => {
             validationSchema={registerValidationSchema}
             onSubmit={handleSubmit}
         >
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100dvh' }}>
-                <Grid container className={styles['registration-form']} justifyContent="center" lg={6} md={8} sm={10} xs={10}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100dvh', padding: '20px 0px' }}>
+                <Grid item container className={styles['registration-form']} justifyContent="center" lg={6} md={8} sm={10} xs={10}>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
                         <Form >
                             <FormItem
@@ -162,7 +160,7 @@ const Register = () => {
                                     {loading ? <CircularProgress size={24} /> : 'Submit'}
                                 </Button>
                                 <Box onClick={() => navigate('/login')} className={styles['already-have-account']} >
-                                    Already have an Account
+                                    Already have an account
                                 </Box>
                             </Stack>
                         </Form>

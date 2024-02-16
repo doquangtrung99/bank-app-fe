@@ -2,7 +2,7 @@ import axios from "../configs/axiosAuth"
 import { WithDraw, Deposit, Transfer } from "../interfaces"
 class TransactionService {
     static async deposit({ accountId, type, amountMoney }: Deposit, userId: string) {
-        return await axios.post('transaction/deposite', {
+        return await axios.post('transaction/deposit', {
             accountId,
             type,
             amountMoney

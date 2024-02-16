@@ -5,7 +5,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Box, Button, CircularProgress, Grid, Modal, TextField } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, Modal, TextField, Typography } from '@mui/material';
 import useGlobal from '../../../hooks/useGlobal';
 import { useState } from 'react';
 import { Form, Formik } from 'formik';
@@ -26,9 +26,9 @@ enum ModalType {
 
 export default function TransactionTable() {
 
-    const { user } = useGlobal();
     const [open, setOpen] = useState(false);
     const [modalType, setModalType] = useState('');
+    const { user } = useGlobal();
     const { loading, trigger } = useTrigger();
 
     const rows = [
@@ -58,32 +58,33 @@ export default function TransactionTable() {
         setOpen(true);
         setModalType(event);
     }
-    const handleSubmit = async (values: any) => {
-        const handleTransaction = async (transactionType: string, accountType: string) => {
-            const transactionData = {
-                accountId: user[`${accountType}Accounts`].id,
-                type: accountType.toLocaleUpperCase() as 'CURRENT' | 'SAVINGS',
-                amountMoney: +values.amount
-            };
-            try {
-                const resTransaction = await trigger((TransactionService as any)[transactionType](transactionData, user.id));
 
-                if (resTransaction) {
-                    console.log(resTransaction);
-                    toast.success(`${transactionType.charAt(0).toUpperCase() + transactionType.slice(1)} account successfully`);
-                }
-            } catch (error) {
-                console.log(error);
-                toast.error(`${transactionType.charAt(0).toUpperCase() + transactionType.slice(1)} account unsuccessfully`);
-            }
+    const handleTransaction = async (transactionType: string, accountType: string, values: any) => {
+        const transactionData = {
+            accountId: user[`${accountType}Accounts`].id,
+            type: accountType.toLocaleUpperCase() as 'CURRENT' | 'SAVINGS',
+            amountMoney: +values.amount
         };
+        try {
+            const resTransaction = await trigger((TransactionService as any)[transactionType](transactionData, user.id));
+
+            if (resTransaction) {
+                toast.success(`${transactionType.charAt(0).toUpperCase() + transactionType.slice(1)} successfully`);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(`${transactionType.charAt(0).toUpperCase() + transactionType.slice(1)} unsuccessfully`);
+        }
+    };
+
+    const handleSubmit = async (values: any) => {
 
         switch (modalType) {
             case ModalType.Withdraw:
-                await handleTransaction(ModalType.Withdraw, 'current');
+                await handleTransaction(ModalType.Withdraw, 'current', values);
                 break;
             case ModalType.Deposit:
-                await handleTransaction(ModalType.Deposit, 'savings');
+                await handleTransaction(ModalType.Deposit, 'savings', values);
                 break;
             case ModalType.Transfer:
                 const transferData = {
@@ -120,7 +121,7 @@ export default function TransactionTable() {
             onSubmit={handleSubmit}
             validationSchema={validation}
         >
-            <Form >
+            <Form data-testid={`form-${content}`}>
                 <FormItem
                     as={TextField}
                     name='amount'
@@ -166,7 +167,7 @@ export default function TransactionTable() {
                         onSubmit={handleSubmit}
                         validationSchema={transferValidation}
                     >
-                        <Form >
+                        <Form data-testid={`form-transfer`}>
                             <FormItem
                                 as={TextField}
                                 name='amount'
@@ -194,8 +195,27 @@ export default function TransactionTable() {
         }
     }
 
+    const renderActionButton = (
+        accountType: string,
+        actionType: (ModalType.Deposit | ModalType.Withdraw | ModalType.Transfer),
+        label: string
+    ) => {
+        return (
+            user?.[`${accountType}Accounts`]?.accountNumber ? (
+                <Button
+                    onClick={() => handleEvent(actionType)}
+                    size="small"
+                    variant={'contained'}
+                    data-testid={actionType.toLowerCase()}
+                >
+                    {label}
+                </Button>
+            ) : null
+        );
+    };
+
     return (
-        <Grid container paddingTop={"50px"} margin="0 auto" lg={10} md={8} sm={10} xs={10}>
+        <Grid item container paddingTop={"50px"} margin="0 auto" lg={10} md={8} sm={10} xs={10}>
             <TableContainer component={Paper} >
                 <Table aria-label="simple table">
                     <TableHead>
@@ -211,27 +231,20 @@ export default function TransactionTable() {
                                 key={row.currentAccount}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
-                                <TableCell component="th" scope="row">
-                                    {row.currentAccount}
-                                    <Button
-                                        onClick={() => handleEvent(ModalType.Withdraw)}
-                                        sx={{ marginLeft: '10px' }}
-                                        size='small'
-                                        variant='contained'>Withdraw</Button>
+                                <TableCell component="th" scope="row" >
+                                    <Typography display={"inline-block"} marginRight={"10px"} >
+                                        {row.currentAccount}
+                                    </Typography>
+                                    {renderActionButton('current', ModalType.Withdraw, 'Withdraw')}
                                 </TableCell>
                                 <TableCell >
-                                    {row.savingsAccount}
-                                    <Button
-                                        onClick={() => handleEvent(ModalType.Deposit)}
-                                        sx={{ marginLeft: '10px' }}
-                                        size='small'
-                                        variant='contained'>Deposit</Button>
+                                    <Typography display={"inline-block"} marginRight={"10px"} >
+                                        {row.savingsAccount}
+                                    </Typography>
+                                    {renderActionButton('savings', ModalType.Deposit, 'Deposit')}
                                 </TableCell>
                                 <TableCell >
-                                    <Button
-                                        onClick={() => handleEvent(ModalType.Transfer)}
-                                        variant='contained'
-                                        size='small'>Transfer</Button>
+                                    {renderActionButton('savings', ModalType.Transfer, 'Transfer')}
                                 </TableCell>
                             </TableRow>
                         ))}

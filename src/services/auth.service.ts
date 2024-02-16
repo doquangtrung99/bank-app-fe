@@ -1,24 +1,7 @@
 import { AxiosResponse } from "axios";
 import axios from "../configs/axiosAuth"
-import { RegisterUser } from "../interfaces"
+import { ILogin, IRefreshToken, RegisterUser, ValidateResponse } from "../interfaces"
 
-interface ValidateResponse {
-    userId: string,
-    username: string,
-    email: string,
-    role: string,
-    iat: number,
-    exp: number
-}
-
-interface ILogin {
-    email: string,
-    password: string
-}
-
-interface IRefreshToken {
-    accessToken: string
-}
 class AuthService {
 
     static async login({ email, password }: ILogin, signal?: AbortSignal) {

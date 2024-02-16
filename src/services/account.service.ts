@@ -1,8 +1,10 @@
+import { AxiosResponse } from 'axios'
 import axios from '../configs/axiosAuth'
+import { IAccountItem } from '../interfaces'
 
 class AccountService {
 
-    static async create(type: ('SAVINGS' | 'CURRENT'), userId: string) {
+    static async create(type: ('SAVINGS' | 'CURRENT'), userId: string): Promise<AxiosResponse<IAccountItem>> {
 
         return await axios.post("/account/create", { type, userId }, {
             headers: {

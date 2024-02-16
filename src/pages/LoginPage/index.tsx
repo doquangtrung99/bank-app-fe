@@ -66,7 +66,7 @@ const Login = () => {
             onSubmit={handleSubmit}
         >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100dvh' }}>
-                <Grid container className={styles['login-form']} justifyContent="center" lg={6} md={6} sm={10} xs={10}>
+                <Grid item container className={styles['login-form']} justifyContent="center" lg={6} md={6} sm={10} xs={10}>
                     <Grid item xs={12} sm={12} md={12} lg={12} >
                         <Form >
                             <FormItem

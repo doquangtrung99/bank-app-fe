@@ -13,7 +13,7 @@ const useAuthentication = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      const currentTokenData = jwtDecode(token);
+      const currentTokenData: { userId: string, role: string, email: string } = jwtDecode(token);
       AuthService.validateToken(token, currentTokenData?.userId)
         .then((decoded) => {
           if (decoded && decoded.data.email) {
